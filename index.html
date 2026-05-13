@@ -1,0 +1,1527 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Studio Brand Bottleneck Finder</title>
+  <meta name="description" content="A fun 7-minute diagnostic for architecture, interiors, furniture, lighting, and landscape studios to find the marketing bottleneck blocking better clients." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; }
+    * { margin: 0; padding: 0; }
+
+    :root {
+      --ink: #191613;
+      --ink-2: #312c27;
+      --muted: #756d64;
+      --soft: #aaa096;
+      --paper: #fbfaf7;
+      --warm: #f4eee7;
+      --warm-2: #eee4d9;
+      --line: #e1d8cf;
+      --accent: #c3632e;
+      --accent-2: #e9b68e;
+      --danger: #9a3d2d;
+      --green: #2d6a4f;
+      --blue: #455a70;
+      --shadow: 0 24px 70px rgba(25, 22, 19, 0.12);
+      --serif: 'Cormorant Garamond', Georgia, serif;
+      --sans: 'Outfit', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    }
+
+    html { scroll-behavior: smooth; }
+    body {
+      min-height: 100vh;
+      font-family: var(--sans);
+      background: var(--paper);
+      color: var(--ink);
+      overflow-x: hidden;
+      font-weight: 300;
+    }
+
+    button, input, select, textarea { font: inherit; }
+    button { border: 0; }
+    a { color: inherit; }
+
+    .progress-shell {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 4px;
+      z-index: 80;
+      background: var(--line);
+    }
+    .progress-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, var(--accent), var(--accent-2));
+      transition: width 500ms cubic-bezier(.16, 1, .3, 1);
+    }
+
+    .topbar {
+      position: fixed;
+      top: 4px;
+      left: 0;
+      right: 0;
+      z-index: 70;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      padding: 1rem clamp(1rem, 4vw, 2.5rem);
+      background: rgba(251, 250, 247, 0.88);
+      backdrop-filter: blur(18px);
+      border-bottom: 1px solid rgba(225, 216, 207, 0.5);
+    }
+    .brand-wordmark {
+      font-family: var(--serif);
+      font-size: 1.1rem;
+      font-weight: 600;
+      letter-spacing: .02em;
+      white-space: nowrap;
+    }
+    .top-meta {
+      display: flex;
+      align-items: center;
+      gap: .7rem;
+      font-size: .72rem;
+      text-transform: uppercase;
+      letter-spacing: .12em;
+      color: var(--soft);
+      white-space: nowrap;
+    }
+    .signal-pill {
+      color: var(--accent);
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: .35rem .7rem;
+      background: #fff;
+    }
+
+    .screen {
+      display: none;
+      min-height: 100vh;
+      padding: 7.25rem 1.25rem 3rem;
+      animation: rise 520ms ease both;
+    }
+    .screen.active { display: flex; }
+    @keyframes rise {
+      from { opacity: 0; transform: translateY(18px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .centered {
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+    .narrow { max-width: 720px; width: 100%; margin: 0 auto; }
+    .wide { max-width: 1040px; width: 100%; margin: 0 auto; }
+
+    .eyebrow {
+      font-size: .72rem;
+      text-transform: uppercase;
+      letter-spacing: .22em;
+      color: var(--accent);
+      font-weight: 600;
+      margin-bottom: 1rem;
+    }
+    .headline {
+      font-family: var(--serif);
+      font-size: clamp(2.7rem, 7vw, 5.6rem);
+      line-height: .96;
+      font-weight: 400;
+      letter-spacing: -.035em;
+      max-width: 850px;
+      margin: 0 auto 1.25rem;
+    }
+    .headline em { color: var(--accent); font-style: italic; }
+    .subhead {
+      max-width: 640px;
+      margin: 0 auto;
+      color: rgba(255,255,255,.62);
+      font-size: clamp(1rem, 2vw, 1.15rem);
+      line-height: 1.7;
+    }
+    .subhead.dark { color: var(--muted); }
+
+    .hero {
+      position: relative;
+      overflow: hidden;
+      background: var(--ink);
+      color: #fff;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      width: min(700px, 80vw);
+      height: min(700px, 80vw);
+      top: 12%;
+      right: -15%;
+      background: radial-gradient(circle, rgba(195, 99, 46, .28), rgba(195, 99, 46, .05) 45%, transparent 70%);
+      pointer-events: none;
+    }
+    .hero::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(255,255,255,.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.04) 1px, transparent 1px);
+      background-size: 80px 80px;
+      mask-image: linear-gradient(to bottom, rgba(0,0,0,.7), transparent 80%);
+      pointer-events: none;
+    }
+    .hero-inner { position: relative; z-index: 1; }
+    .hero-chips {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: .55rem;
+      margin: 2.1rem auto 2.35rem;
+      max-width: 780px;
+    }
+    .chip {
+      border: 1px solid rgba(255,255,255,.14);
+      color: rgba(255,255,255,.58);
+      border-radius: 999px;
+      padding: .45rem .8rem;
+      font-size: .78rem;
+      background: rgba(255,255,255,.025);
+    }
+    .hero-note {
+      margin-top: 1rem;
+      color: rgba(255,255,255,.36);
+      font-size: .82rem;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: .55rem;
+      border-radius: 999px;
+      padding: .95rem 1.45rem;
+      cursor: pointer;
+      transition: transform .16s ease, background .2s ease, border-color .2s ease, opacity .2s ease;
+      text-decoration: none;
+      font-weight: 500;
+      line-height: 1;
+    }
+    .btn:hover { transform: translateY(-1px); }
+    .btn:active { transform: translateY(0); }
+    .btn-primary { background: var(--accent); color: #fff; }
+    .btn-primary:hover { background: #ae5525; }
+    .btn-dark { background: var(--ink); color: #fff; }
+    .btn-dark:hover { background: var(--accent); }
+    .btn-ghost {
+      border: 1px solid var(--line);
+      color: var(--muted);
+      background: #fff;
+    }
+    .btn-ghost:hover { border-color: var(--accent); color: var(--ink); }
+    .btn:disabled { opacity: .36; cursor: not-allowed; transform: none; }
+
+    .card {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      box-shadow: var(--shadow);
+      padding: clamp(1.35rem, 4vw, 2.25rem);
+    }
+    .soft-card {
+      background: var(--warm);
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      padding: clamp(1rem, 3vw, 1.35rem);
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 1rem;
+      text-align: left;
+      margin-top: 1.8rem;
+    }
+    .full { grid-column: 1 / -1; }
+    .field label {
+      display: block;
+      font-size: .72rem;
+      text-transform: uppercase;
+      letter-spacing: .11em;
+      color: var(--muted);
+      font-weight: 600;
+      margin-bottom: .45rem;
+    }
+    .input, .select {
+      width: 100%;
+      border: 1.5px solid var(--line);
+      background: var(--paper);
+      border-radius: 14px;
+      padding: .85rem 1rem;
+      color: var(--ink);
+      outline: none;
+      transition: border-color .18s ease, background .18s ease;
+      font-size: .95rem;
+    }
+    .input:focus, .select:focus { border-color: var(--accent); background: #fff; }
+    .small-help { margin-top: .45rem; color: var(--soft); font-size: .8rem; line-height: 1.45; }
+
+    .stage-strip {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: .5rem;
+      margin: 0 auto 1.2rem;
+    }
+    .stage-chip {
+      border: 1px solid var(--line);
+      background: #fff;
+      color: var(--soft);
+      border-radius: 999px;
+      padding: .55rem .7rem;
+      font-size: .68rem;
+      text-transform: uppercase;
+      letter-spacing: .1em;
+      text-align: center;
+      font-weight: 600;
+      transition: all .2s ease;
+    }
+    .stage-chip.active { background: var(--ink); color: #fff; border-color: var(--ink); }
+    .stage-chip.done { color: var(--accent); border-color: rgba(195, 99, 46, .4); background: #fffaf6; }
+
+    .question-card { text-align: left; }
+    .q-topline {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+    .q-stage {
+      font-size: .72rem;
+      text-transform: uppercase;
+      letter-spacing: .18em;
+      color: var(--accent);
+      font-weight: 600;
+    }
+    .q-count {
+      color: var(--soft);
+      font-size: .78rem;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+    .q-title {
+      font-family: var(--serif);
+      font-size: clamp(1.85rem, 4vw, 2.75rem);
+      font-weight: 400;
+      line-height: 1.08;
+      letter-spacing: -.02em;
+      margin-bottom: .65rem;
+    }
+    .q-why {
+      color: var(--muted);
+      line-height: 1.65;
+      margin-bottom: 1.4rem;
+      max-width: 620px;
+    }
+    .options {
+      display: grid;
+      gap: .75rem;
+      margin: 1.2rem 0 1.5rem;
+    }
+    .option {
+      display: flex;
+      align-items: flex-start;
+      gap: .9rem;
+      width: 100%;
+      background: var(--paper);
+      border: 1.5px solid var(--line);
+      border-radius: 18px;
+      padding: 1rem;
+      cursor: pointer;
+      text-align: left;
+      transition: transform .12s ease, border-color .16s ease, background .16s ease;
+      color: var(--ink-2);
+    }
+    .option:hover { border-color: var(--accent); background: #fffaf6; transform: translateY(-1px); }
+    .option.selected { border-color: var(--accent); background: #fff6ef; }
+    .option-letter {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      background: #fff;
+      border: 1px solid var(--line);
+      color: var(--soft);
+      flex: 0 0 auto;
+      font-size: .8rem;
+      font-weight: 600;
+    }
+    .option.selected .option-letter { background: var(--accent); border-color: var(--accent); color: #fff; }
+    .option-title { font-weight: 500; margin-bottom: .15rem; }
+    .option-desc { color: var(--muted); line-height: 1.45; font-size: .88rem; }
+    .nav-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+    .mini-signal {
+      margin-top: 1rem;
+      color: var(--accent);
+      font-size: .82rem;
+      opacity: 0;
+      transform: translateY(4px);
+      transition: opacity .2s, transform .2s;
+    }
+    .mini-signal.show { opacity: 1; transform: none; }
+
+    .stage-complete {
+      text-align: center;
+      max-width: 700px;
+      margin: 0 auto;
+    }
+    .stamp {
+      width: 88px;
+      height: 88px;
+      border-radius: 50%;
+      margin: 0 auto 1.35rem;
+      display: grid;
+      place-items: center;
+      color: #fff;
+      background: var(--accent);
+      box-shadow: 0 14px 40px rgba(195,99,46,.28);
+      font-family: var(--serif);
+      font-size: 2rem;
+      font-style: italic;
+    }
+    .stage-title {
+      font-family: var(--serif);
+      font-size: clamp(2.2rem, 5vw, 3.35rem);
+      line-height: 1;
+      font-weight: 400;
+      letter-spacing: -.03em;
+      margin-bottom: .8rem;
+    }
+    .stage-copy {
+      color: var(--muted);
+      line-height: 1.7;
+      max-width: 620px;
+      margin: 0 auto 1.5rem;
+    }
+
+    .locked-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: .85rem;
+      margin: 1.4rem 0;
+    }
+    .locked-card {
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 1rem;
+      background: var(--paper);
+      text-align: left;
+      position: relative;
+      overflow: hidden;
+    }
+    .locked-card::after {
+      content: 'Locked';
+      position: absolute;
+      right: .8rem;
+      top: .8rem;
+      color: var(--soft);
+      font-size: .68rem;
+      text-transform: uppercase;
+      letter-spacing: .1em;
+      font-weight: 600;
+    }
+    .locked-label { font-size: .74rem; color: var(--soft); text-transform: uppercase; letter-spacing: .12em; margin-bottom: .5rem; font-weight: 600; }
+    .locked-line { width: 70%; height: 10px; border-radius: 999px; background: var(--warm-2); margin-bottom: .45rem; }
+    .locked-line.short { width: 46%; }
+
+    .loader-screen {
+      background: var(--ink);
+      color: #fff;
+      text-align: center;
+      justify-content: center;
+      align-items: center;
+    }
+    .loader-orb {
+      width: 74px;
+      height: 74px;
+      border-radius: 50%;
+      margin: 0 auto 1.2rem;
+      border: 2px solid rgba(255,255,255,.11);
+      border-top-color: var(--accent);
+      border-right-color: var(--accent-2);
+      animation: spin 900ms linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .loading-title {
+      font-family: var(--serif);
+      font-size: clamp(2rem, 5vw, 3.1rem);
+      line-height: 1;
+      font-weight: 400;
+      margin-bottom: .7rem;
+    }
+    .loading-copy { color: rgba(255,255,255,.54); line-height: 1.6; margin-bottom: 1.5rem; }
+    .loading-list {
+      display: grid;
+      gap: .45rem;
+      max-width: 380px;
+      margin: 0 auto;
+      text-align: left;
+    }
+    .loading-item {
+      display: flex;
+      gap: .6rem;
+      color: rgba(255,255,255,.35);
+      font-size: .9rem;
+      transition: color .25s ease;
+    }
+    .loading-item.active { color: rgba(255,255,255,.9); }
+    .loading-item.done { color: var(--accent-2); }
+
+    .report-screen { padding-bottom: 5rem; }
+    .report-hero {
+      position: relative;
+      overflow: hidden;
+      background: var(--ink);
+      color: #fff;
+      border-radius: 30px;
+      padding: clamp(1.7rem, 5vw, 3rem);
+      box-shadow: var(--shadow);
+      margin-bottom: 1.1rem;
+    }
+    .report-hero::before {
+      content: '';
+      position: absolute;
+      top: -20%;
+      right: -12%;
+      width: 520px;
+      height: 520px;
+      background: radial-gradient(circle, rgba(195,99,46,.34), transparent 68%);
+    }
+    .report-content { position: relative; z-index: 1; }
+    .report-kicker { color: var(--accent-2); font-size: .72rem; text-transform: uppercase; letter-spacing: .18em; font-weight: 600; margin-bottom: .8rem; }
+    .report-title {
+      font-family: var(--serif);
+      font-size: clamp(2.4rem, 6vw, 4.2rem);
+      line-height: .95;
+      letter-spacing: -.035em;
+      font-weight: 400;
+      max-width: 760px;
+      margin-bottom: 1rem;
+    }
+    .report-desc { color: rgba(255,255,255,.66); line-height: 1.7; max-width: 650px; }
+    .report-tags { display: flex; flex-wrap: wrap; gap: .5rem; margin-top: 1.25rem; }
+    .report-tag { border: 1px solid rgba(255,255,255,.13); color: rgba(255,255,255,.64); border-radius: 999px; padding: .35rem .65rem; font-size: .78rem; }
+
+    .dashboard {
+      display: grid;
+      grid-template-columns: 1.25fr .75fr;
+      gap: 1rem;
+      margin: 1rem 0;
+    }
+    .metric-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: .75rem;
+    }
+    .metric {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      padding: 1.05rem;
+    }
+    .metric-label { font-size: .7rem; text-transform: uppercase; letter-spacing: .12em; color: var(--soft); font-weight: 600; margin-bottom: .55rem; }
+    .metric-score { font-family: var(--serif); font-size: 2.65rem; line-height: 1; }
+    .metric-score span { font-size: 1rem; color: var(--soft); }
+    .bar { height: 6px; border-radius: 999px; background: var(--warm-2); overflow: hidden; margin: .65rem 0; }
+    .bar-fill { height: 100%; width: 0%; border-radius: inherit; background: var(--accent); transition: width 900ms cubic-bezier(.16, 1, .3, 1); }
+    .metric-note { color: var(--muted); font-size: .84rem; line-height: 1.5; }
+
+    .level-card {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      padding: 1.2rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      min-height: 100%;
+    }
+    .level-number {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      background: var(--ink);
+      color: #fff;
+      display: grid;
+      place-items: center;
+      font-family: var(--serif);
+      font-size: 2.1rem;
+      margin-bottom: 1rem;
+    }
+    .level-name { font-family: var(--serif); font-size: 1.65rem; line-height: 1; margin-bottom: .55rem; }
+    .level-copy { color: var(--muted); line-height: 1.55; font-size: .92rem; }
+    .next-unlock { margin-top: 1rem; padding: .85rem; background: var(--warm); border-radius: 16px; color: var(--ink-2); font-size: .9rem; line-height: 1.45; }
+
+    .section {
+      margin-top: 1rem;
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 26px;
+      padding: clamp(1.25rem, 4vw, 2rem);
+    }
+    .section-label { font-size: .72rem; text-transform: uppercase; letter-spacing: .18em; color: var(--accent); font-weight: 600; margin-bottom: .9rem; }
+    .section-title { font-family: var(--serif); font-size: clamp(1.7rem, 4vw, 2.35rem); line-height: 1.05; font-weight: 400; margin-bottom: .75rem; }
+    .section-copy { color: var(--muted); line-height: 1.7; }
+    .diagnosis-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .75rem; margin-top: 1rem; }
+    .diagnosis-card { background: var(--warm); border: 1px solid var(--line); border-radius: 20px; padding: 1rem; }
+    .diagnosis-card strong { display: block; margin-bottom: .35rem; font-weight: 600; }
+    .diagnosis-card p { color: var(--muted); line-height: 1.55; font-size: .9rem; }
+
+    .rec-list { display: grid; gap: .75rem; margin-top: 1rem; }
+    .rec {
+      display: grid;
+      grid-template-columns: 42px 1fr auto;
+      gap: .85rem;
+      align-items: start;
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      padding: 1rem;
+      background: var(--paper);
+    }
+    .rec-num {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      background: var(--accent);
+      color: #fff;
+      display: grid;
+      place-items: center;
+      font-weight: 600;
+    }
+    .rec-title { font-weight: 600; margin-bottom: .25rem; }
+    .rec-body { color: var(--muted); line-height: 1.55; font-size: .92rem; }
+    .tag {
+      border-radius: 999px;
+      padding: .3rem .55rem;
+      font-size: .66rem;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+    .tag-now { background: #f7dfd7; color: var(--danger); }
+    .tag-next { background: #f8ead8; color: #9d6321; }
+    .tag-later { background: #e3f0e7; color: var(--green); }
+
+    .challenge-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: .75rem; margin-top: 1rem; }
+    .week { border: 1px solid var(--line); border-radius: 20px; padding: 1rem; background: var(--paper); }
+    .week-label { color: var(--accent); font-size: .72rem; letter-spacing: .13em; text-transform: uppercase; font-weight: 600; margin-bottom: .55rem; }
+    .week-title { font-weight: 600; margin-bottom: .35rem; }
+    .week p { color: var(--muted); line-height: 1.5; font-size: .9rem; }
+
+    .cta-row { display: flex; flex-wrap: wrap; gap: .75rem; align-items: center; justify-content: center; margin-top: 1.2rem; }
+    .toast {
+      position: fixed;
+      left: 50%;
+      bottom: 1.2rem;
+      transform: translateX(-50%) translateY(20px);
+      opacity: 0;
+      transition: opacity .2s ease, transform .2s ease;
+      background: var(--ink);
+      color: #fff;
+      border-radius: 999px;
+      padding: .75rem 1rem;
+      z-index: 100;
+      font-size: .9rem;
+    }
+    .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+    @media (max-width: 820px) {
+      .form-grid, .dashboard, .diagnosis-grid, .challenge-grid { grid-template-columns: 1fr; }
+      .metric-grid, .locked-grid { grid-template-columns: 1fr; }
+      .stage-strip { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .rec { grid-template-columns: 42px 1fr; }
+      .rec .tag { grid-column: 2; width: fit-content; }
+      .top-meta .desktop-only { display: none; }
+    }
+    @media (max-width: 520px) {
+      .screen { padding-top: 6.8rem; }
+      .topbar { padding: .85rem 1rem; }
+      .brand-wordmark { font-size: .98rem; }
+      .top-meta { font-size: .65rem; gap: .4rem; }
+      .card { border-radius: 20px; }
+      .nav-row { align-items: stretch; flex-direction: column-reverse; }
+      .nav-row .btn { width: 100%; }
+      .headline { font-size: 3.25rem; }
+    }
+  </style>
+</head>
+<body>
+  <!--
+    GITHUB SETUP NOTES
+    1. Save this file as index.html.
+    2. Push it to a GitHub repository.
+    3. Enable GitHub Pages from Settings > Pages.
+    4. Optional lead capture: set LEAD_CAPTURE_ENDPOINT below to a Formspree, Make, Zapier, Airtable, or custom backend webhook.
+    5. Do not call OpenAI/Anthropic directly from this HTML. Use a backend/serverless function if you want a true AI-generated report.
+  -->
+
+  <div class="progress-shell"><div class="progress-fill" id="progressFill"></div></div>
+
+  <header class="topbar">
+    <div class="brand-wordmark">Studio Brand Bottleneck Finder</div>
+    <div class="top-meta">
+      <span class="desktop-only" id="stageMeta">Not started</span>
+      <span class="signal-pill" id="signalMeta">0 signals</span>
+    </div>
+  </header>
+
+  <main>
+    <section class="screen centered hero active" id="screenLanding">
+      <div class="hero-inner narrow">
+        <div class="eyebrow">Free 7-minute diagnostic</div>
+        <h1 class="headline">Your work might be strong. <em>Your brand may be leaking trust.</em></h1>
+        <p class="subhead">Find the exact bottleneck stopping your architecture, interiors, furniture, lighting, or landscape studio from attracting better clients.</p>
+        <div class="hero-chips">
+          <span class="chip">Positioning</span>
+          <span class="chip">Portfolio proof</span>
+          <span class="chip">Website conversion</span>
+          <span class="chip">Visibility</span>
+          <span class="chip">Marketing capacity</span>
+        </div>
+        <button class="btn btn-primary" onclick="goToProfile()">Find my studio leak →</button>
+        <div class="hero-note">No boring scorecard. No vague “post more content” advice.</div>
+      </div>
+    </section>
+
+    <section class="screen centered" id="screenProfile">
+      <div class="narrow">
+        <div class="card">
+          <div class="eyebrow">Step 1 · Studio context</div>
+          <h2 class="q-title">Before we inspect the leak, what kind of studio are we looking at?</h2>
+          <p class="q-why">The same advice should not go to a solo interior designer and a 20-person architecture practice. Context changes the diagnosis.</p>
+
+          <div class="form-grid">
+            <div class="field">
+              <label for="studioName">Studio name</label>
+              <input class="input" id="studioName" type="text" placeholder="e.g. Atelier Mora" />
+            </div>
+            <div class="field">
+              <label for="studioWebsite">Website</label>
+              <input class="input" id="studioWebsite" type="url" placeholder="https://..." />
+            </div>
+            <div class="field">
+              <label for="studioSector">Primary discipline</label>
+              <select class="select" id="studioSector">
+                <option value="">Choose one</option>
+                <option>Architecture</option>
+                <option>Interior design</option>
+                <option>Furniture / product design</option>
+                <option>Lighting design</option>
+                <option>Landscape design</option>
+                <option>Multidisciplinary design studio</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="studioSize">Studio size</label>
+              <select class="select" id="studioSize">
+                <option value="">Choose one</option>
+                <option>Solo founder</option>
+                <option>2–5 people</option>
+                <option>6–15 people</option>
+                <option>16–30 people</option>
+                <option>30+ people</option>
+              </select>
+            </div>
+            <div class="field full">
+              <label for="knownFor">What do you want the studio to be known for?</label>
+              <input class="input" id="knownFor" type="text" placeholder="e.g. Warm minimal interiors for boutique hospitality brands" />
+              <div class="small-help">Optional, but useful. This becomes a comparison point in the final diagnosis.</div>
+            </div>
+          </div>
+
+          <div class="nav-row">
+            <button class="btn btn-ghost" onclick="showScreen('screenLanding')">← Back</button>
+            <button class="btn btn-dark" onclick="startQuestions()">Start the inspection →</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="screen centered" id="screenQuestion">
+      <div class="narrow">
+        <div class="stage-strip" id="stageStrip"></div>
+        <div class="card question-card">
+          <div class="q-topline">
+            <div class="q-stage" id="qStage">Stage</div>
+            <div class="q-count" id="qCount">Question</div>
+          </div>
+          <h2 class="q-title" id="qTitle"></h2>
+          <p class="q-why" id="qWhy"></p>
+          <div class="options" id="options"></div>
+          <div class="mini-signal" id="miniSignal">Signal captured.</div>
+          <div class="nav-row">
+            <button class="btn btn-ghost" onclick="prevQuestion()">← Back</button>
+            <button class="btn btn-dark" id="nextBtn" onclick="nextQuestion()" disabled>Next signal →</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="screen centered" id="screenStageComplete">
+      <div class="stage-complete">
+        <div class="stamp">✓</div>
+        <div class="eyebrow" id="completeEyebrow">Layer complete</div>
+        <h2 class="stage-title" id="completeTitle">Layer complete.</h2>
+        <p class="stage-copy" id="completeCopy">We have captured enough signals to continue.</p>
+        <button class="btn btn-primary" onclick="continueAfterStage()">Keep digging →</button>
+      </div>
+    </section>
+
+    <section class="screen centered" id="screenEmail">
+      <div class="narrow">
+        <div class="card">
+          <div class="eyebrow">Report ready · final unlock</div>
+          <h2 class="q-title">Your studio bottleneck has been mapped.</h2>
+          <p class="q-why">Drop your email to unlock the full diagnosis. On GitHub Pages, this works locally by default. Add a webhook endpoint in the code if you want to store leads.</p>
+
+          <div class="locked-grid">
+            <div class="locked-card">
+              <div class="locked-label">Studio type</div>
+              <div class="locked-line"></div>
+              <div class="locked-line short"></div>
+            </div>
+            <div class="locked-card">
+              <div class="locked-label">Main leak</div>
+              <div class="locked-line"></div>
+              <div class="locked-line short"></div>
+            </div>
+            <div class="locked-card">
+              <div class="locked-label">What to kill first</div>
+              <div class="locked-line"></div>
+              <div class="locked-line short"></div>
+            </div>
+            <div class="locked-card">
+              <div class="locked-label">30-day repair plan</div>
+              <div class="locked-line"></div>
+              <div class="locked-line short"></div>
+            </div>
+          </div>
+
+          <div class="form-grid">
+            <div class="field">
+              <label for="firstName">First name</label>
+              <input class="input" id="firstName" type="text" placeholder="Your name" />
+            </div>
+            <div class="field">
+              <label for="email">Email</label>
+              <input class="input" id="email" type="email" placeholder="you@studio.com" />
+            </div>
+          </div>
+
+          <div class="nav-row">
+            <button class="btn btn-ghost" onclick="backToLastQuestion()">← Edit answers</button>
+            <button class="btn btn-primary" onclick="submitAndGenerate()">Unlock my report →</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="screen loader-screen" id="screenLoading">
+      <div class="narrow">
+        <div class="loader-orb"></div>
+        <h2 class="loading-title">Reading the room.</h2>
+        <p class="loading-copy">We are turning your answers into a useful diagnosis, not a generic marketing lecture.</p>
+        <div class="loading-list">
+          <div class="loading-item" id="load0"><span>→</span><span>Mapping your brand signals</span></div>
+          <div class="loading-item" id="load1"><span>→</span><span>Finding the leakiest part of the system</span></div>
+          <div class="loading-item" id="load2"><span>→</span><span>Choosing your studio archetype</span></div>
+          <div class="loading-item" id="load3"><span>→</span><span>Building a realistic 30-day repair plan</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="screen report-screen" id="screenReport">
+      <div class="wide" id="reportMount"></div>
+    </section>
+  </main>
+
+  <div class="toast" id="toast">Copied.</div>
+
+  <script>
+    // -----------------------------
+    // CONFIG
+    // -----------------------------
+    const CONFIG = {
+      // Optional: paste a Formspree, Make, Zapier, Airtable, or custom endpoint here.
+      // Example: 'https://formspree.io/f/xxxxxxx'
+      LEAD_CAPTURE_ENDPOINT: '',
+
+      // Change this to your email before publishing.
+      BOOKING_EMAIL: 'hello@yourstudio.com',
+
+      // If true, the email field is required before report unlock.
+      REQUIRE_EMAIL: true
+    };
+
+    // -----------------------------
+    // QUESTIONS
+    // -----------------------------
+    const STAGES = [
+      { id: 'signal', name: 'Find the signal', completeTitle: 'Signal found.', completeCopy: 'We now know how clearly your studio explains why clients should choose you.' },
+      { id: 'leak', name: 'Spot the leak', completeTitle: 'Leak spotted.', completeCopy: 'We have enough evidence to see whether your proof, website, or message is doing the heavy lifting.' },
+      { id: 'room', name: 'Read the room', completeTitle: 'Room read.', completeCopy: 'We now know whether your visibility is intentional or just inherited from what every other studio does.' },
+      { id: 'fix', name: 'Pick the fix', completeTitle: 'Fix selected.', completeCopy: 'Your ambition and capacity are now mapped, so the report can recommend something realistic.' }
+    ];
+
+    const QUESTIONS = [
+      {
+        id: 'positioning', stage: 'signal',
+        title: 'When a potential client lands on your website, how quickly can they understand why you are different?',
+        why: 'Pretty work gets attention. Clear difference gets chosen.',
+        options: [
+          { title: 'They probably cannot', desc: 'We describe services, but the difference is blurry.', scores: { positioning: 1, proof: 2, conversion: 1, visibility: 2, capacity: 3 } },
+          { title: 'They can understand our style', desc: 'The visual direction is clear, but the business reason is weaker.', scores: { positioning: 2, proof: 3, conversion: 2, visibility: 3, capacity: 3 } },
+          { title: 'They can understand our expertise', desc: 'We explain what we are good at, but not always sharply.', scores: { positioning: 3, proof: 3, conversion: 3, visibility: 3, capacity: 3 } },
+          { title: 'They can understand our niche', desc: 'Our audience, value, and difference are clear.', scores: { positioning: 4, proof: 4, conversion: 4, visibility: 4, capacity: 3 } },
+          { title: 'They can repeat our point of view', desc: 'We are known for a specific perspective or specialization.', scores: { positioning: 5, proof: 4, conversion: 5, visibility: 5, capacity: 4 } }
+        ]
+      },
+      {
+        id: 'client', stage: 'signal',
+        title: 'Who are you really trying to attract right now?',
+        why: '“Everyone with a budget” is not a target audience. It is a cry for help.',
+        options: [
+          { title: 'Anyone who needs our services', desc: 'We take what comes through the door.', scores: { positioning: 1, proof: 2, conversion: 1, visibility: 2, capacity: 2 } },
+          { title: 'A project type', desc: 'Residential, hospitality, workplace, product, public space, and so on.', scores: { positioning: 2, proof: 2, conversion: 2, visibility: 2, capacity: 3 } },
+          { title: 'A client type', desc: 'We know the buyer, their situation, and what they care about.', scores: { positioning: 4, proof: 3, conversion: 4, visibility: 3, capacity: 3 } },
+          { title: 'A high-fit client type', desc: 'We know who to attract and who to politely avoid.', scores: { positioning: 5, proof: 4, conversion: 4, visibility: 4, capacity: 4 } }
+        ]
+      },
+      {
+        id: 'offer', stage: 'signal',
+        title: 'What do clients mostly buy from you?',
+        why: 'The answer reveals whether you are selling deliverables, taste, expertise, or transformation.',
+        options: [
+          { title: 'Deliverables', desc: 'Plans, drawings, concepts, visuals, specifications, products.', scores: { positioning: 2, proof: 2, conversion: 2, visibility: 2, capacity: 3 } },
+          { title: 'Aesthetic direction', desc: 'They want our taste, style, and creative eye.', scores: { positioning: 3, proof: 3, conversion: 2, visibility: 3, capacity: 3 } },
+          { title: 'Problem-solving', desc: 'They value our process, constraints management, and decisions.', scores: { positioning: 4, proof: 4, conversion: 4, visibility: 3, capacity: 3 } },
+          { title: 'Business or lifestyle outcome', desc: 'They see our work as helping them create value, status, comfort, experience, or growth.', scores: { positioning: 5, proof: 5, conversion: 5, visibility: 4, capacity: 4 } }
+        ]
+      },
+      {
+        id: 'portfolio', stage: 'leak',
+        title: 'When you show a project, how much of the thinking do you reveal?',
+        why: 'Finished photos show taste. Process shows expertise.',
+        options: [
+          { title: 'Mostly finished photography', desc: 'The work looks good, but the reasoning stays hidden.', scores: { positioning: 2, proof: 1, conversion: 2, visibility: 3, capacity: 3 } },
+          { title: 'Photos and basic description', desc: 'Location, year, scope, maybe a short paragraph.', scores: { positioning: 2, proof: 2, conversion: 2, visibility: 3, capacity: 3 } },
+          { title: 'Brief, constraints, decisions, result', desc: 'We show the story behind the outcome.', scores: { positioning: 4, proof: 4, conversion: 4, visibility: 4, capacity: 3 } },
+          { title: 'Full case-study thinking', desc: 'We make the value of our process obvious.', scores: { positioning: 5, proof: 5, conversion: 5, visibility: 4, capacity: 4 } }
+        ]
+      },
+      {
+        id: 'website', stage: 'leak',
+        title: 'What is your website currently doing for the business?',
+        why: 'A website can be a gallery, a credibility layer, or a quiet sales machine. Which one is yours?',
+        options: [
+          { title: 'Mostly existing', desc: 'It is outdated or does not represent us properly.', scores: { positioning: 1, proof: 2, conversion: 1, visibility: 2, capacity: 2 } },
+          { title: 'Looking good', desc: 'It feels designed, but it does not explain the value clearly.', scores: { positioning: 2, proof: 3, conversion: 2, visibility: 3, capacity: 3 } },
+          { title: 'Building trust', desc: 'It explains who we are and gives prospects confidence.', scores: { positioning: 3, proof: 4, conversion: 3, visibility: 3, capacity: 3 } },
+          { title: 'Guiding inquiries', desc: 'It helps visitors understand fit, services, proof, and next steps.', scores: { positioning: 4, proof: 4, conversion: 5, visibility: 4, capacity: 4 } },
+          { title: 'Generating qualified leads', desc: 'It regularly brings in the right kind of opportunities.', scores: { positioning: 5, proof: 5, conversion: 5, visibility: 5, capacity: 4 } }
+        ]
+      },
+      {
+        id: 'proof', stage: 'leak',
+        title: 'What proof do you use beyond the work itself?',
+        why: 'Good work says “look.” Proof says “trust us.”',
+        options: [
+          { title: 'Very little', desc: 'The portfolio has to do almost all the convincing.', scores: { positioning: 2, proof: 1, conversion: 2, visibility: 2, capacity: 3 } },
+          { title: 'Some testimonials or logos', desc: 'We have proof, but it is not deeply integrated.', scores: { positioning: 3, proof: 3, conversion: 3, visibility: 3, capacity: 3 } },
+          { title: 'Press, awards, collaborations, or client quotes', desc: 'We have credibility signals in several places.', scores: { positioning: 4, proof: 4, conversion: 4, visibility: 4, capacity: 4 } },
+          { title: 'Evidence-led case studies', desc: 'We show the challenge, decisions, outcomes, and why it mattered.', scores: { positioning: 5, proof: 5, conversion: 5, visibility: 4, capacity: 4 } }
+        ]
+      },
+      {
+        id: 'channels', stage: 'room',
+        title: 'Where do you publish because it actually makes strategic sense?',
+        why: 'The wrong channel can make a strong studio look busy but not desirable.',
+        options: [
+          { title: 'We publish wherever we remember to', desc: 'No clear rhythm, no clear reason.', scores: { positioning: 2, proof: 2, conversion: 2, visibility: 1, capacity: 1 } },
+          { title: 'Mostly Instagram', desc: 'It is the default place for design work, even if leads are unclear.', scores: { positioning: 2, proof: 3, conversion: 2, visibility: 2, capacity: 2 } },
+          { title: 'Instagram plus one business channel', desc: 'We use LinkedIn, email, press, SEO, or partnerships with some intention.', scores: { positioning: 3, proof: 3, conversion: 3, visibility: 4, capacity: 3 } },
+          { title: 'A clear visibility system', desc: 'Each channel has a role: attention, trust, proof, conversion, or nurture.', scores: { positioning: 5, proof: 4, conversion: 5, visibility: 5, capacity: 4 } }
+        ]
+      },
+      {
+        id: 'leads', stage: 'room',
+        title: 'Where did your last five good opportunities come from?',
+        why: 'This is where the pretty brand meets commercial reality.',
+        options: [
+          { title: 'Mostly referrals', desc: 'Word of mouth is carrying the business.', scores: { positioning: 3, proof: 3, conversion: 2, visibility: 2, capacity: 3 }, flag: 'referral' },
+          { title: 'Mostly social media', desc: 'Attention exists, but quality may vary.', scores: { positioning: 3, proof: 3, conversion: 3, visibility: 4, capacity: 3 } },
+          { title: 'Website and search', desc: 'People are discovering us with clear intent.', scores: { positioning: 4, proof: 4, conversion: 4, visibility: 4, capacity: 3 } },
+          { title: 'Press, awards, events, or partnerships', desc: 'Reputation channels are helping create opportunity.', scores: { positioning: 4, proof: 5, conversion: 4, visibility: 5, capacity: 4 } },
+          { title: 'A healthy mix', desc: 'We are not dependent on one source.', scores: { positioning: 5, proof: 5, conversion: 5, visibility: 5, capacity: 5 } }
+        ]
+      },
+      {
+        id: 'goal', stage: 'fix',
+        title: 'What do you actually want more of in the next 12–18 months?',
+        why: 'More clients and better clients require very different marketing systems.',
+        options: [
+          { title: 'More consistent inquiries', desc: 'We need more predictability.', scores: { positioning: 3, proof: 3, conversion: 3, visibility: 4, capacity: 3 }, goal: 'consistency' },
+          { title: 'Better-fit clients', desc: 'Fewer wrong-fit conversations. More aligned projects.', scores: { positioning: 5, proof: 4, conversion: 4, visibility: 3, capacity: 3 }, goal: 'fit' },
+          { title: 'Larger or higher-value projects', desc: 'We want to move upmarket.', scores: { positioning: 5, proof: 5, conversion: 4, visibility: 4, capacity: 4 }, goal: 'upmarket' },
+          { title: 'More recognition', desc: 'We want press, authority, events, and category visibility.', scores: { positioning: 4, proof: 5, conversion: 3, visibility: 5, capacity: 4 }, goal: 'authority' },
+          { title: 'A pivot', desc: 'New sector, geography, project type, or product direction.', scores: { positioning: 4, proof: 3, conversion: 3, visibility: 4, capacity: 3 }, goal: 'pivot' }
+        ]
+      },
+      {
+        id: 'capacity', stage: 'fix',
+        title: 'What is the honest reason marketing keeps slipping?',
+        why: 'The best strategy is useless if it ignores the constraint.',
+        options: [
+          { title: 'Time', desc: 'Delivery work eats everything.', scores: { positioning: 3, proof: 3, conversion: 3, visibility: 2, capacity: 1 }, barrier: 'time' },
+          { title: 'Confidence', desc: 'We are not sure what to say, where, or how directly to say it.', scores: { positioning: 2, proof: 3, conversion: 3, visibility: 2, capacity: 2 }, barrier: 'confidence' },
+          { title: 'Perfectionism', desc: 'Nothing feels finished enough to publish.', scores: { positioning: 3, proof: 2, conversion: 3, visibility: 2, capacity: 2 }, barrier: 'perfectionism' },
+          { title: 'Budget', desc: 'We cannot invest heavily right now.', scores: { positioning: 3, proof: 3, conversion: 2, visibility: 2, capacity: 2 }, barrier: 'budget' },
+          { title: 'We have capacity', desc: 'We need sharper direction, not more time.', scores: { positioning: 4, proof: 4, conversion: 4, visibility: 4, capacity: 5 }, barrier: 'direction' }
+        ]
+      }
+    ];
+
+    // -----------------------------
+    // STATE
+    // -----------------------------
+    let currentQuestion = 0;
+    let answers = {};
+    let profile = {};
+    let latestReport = null;
+
+    const $ = (id) => document.getElementById(id);
+
+    function escapeHTML(str) {
+      return String(str || '').replace(/[&<>'"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[c]));
+    }
+
+    function showScreen(id) {
+      document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+      $(id).classList.add('active');
+      window.scrollTo({ top: 0, behavior: 'instant' });
+      updateUI();
+    }
+
+    function updateUI() {
+      const active = document.querySelector('.screen.active')?.id;
+      let pct = 0;
+      if (active === 'screenLanding') pct = 0;
+      if (active === 'screenProfile') pct = 8;
+      if (active === 'screenQuestion') pct = 18 + (currentQuestion / QUESTIONS.length) * 56;
+      if (active === 'screenStageComplete') pct = 18 + ((currentQuestion + 1) / QUESTIONS.length) * 56;
+      if (active === 'screenEmail') pct = 82;
+      if (active === 'screenLoading') pct = 92;
+      if (active === 'screenReport') pct = 100;
+      $('progressFill').style.width = pct + '%';
+
+      const count = Object.keys(answers).length;
+      $('signalMeta').textContent = `${count} / ${QUESTIONS.length} signals`;
+      const q = QUESTIONS[currentQuestion];
+      const stage = q ? STAGES.find(s => s.id === q.stage) : null;
+      $('stageMeta').textContent = stage ? stage.name : active === 'screenReport' ? 'Report unlocked' : 'Studio diagnostic';
+    }
+
+    function goToProfile() { showScreen('screenProfile'); }
+
+    function readProfile() {
+      profile = {
+        studioName: $('studioName').value.trim() || 'Your studio',
+        website: $('studioWebsite').value.trim(),
+        sector: $('studioSector').value,
+        size: $('studioSize').value,
+        knownFor: $('knownFor').value.trim(),
+        firstName: $('firstName') ? $('firstName').value.trim() : '',
+        email: $('email') ? $('email').value.trim() : ''
+      };
+    }
+
+    function startQuestions() {
+      readProfile();
+      currentQuestion = 0;
+      renderQuestion();
+      showScreen('screenQuestion');
+    }
+
+    function renderStageStrip() {
+      const currentStageId = QUESTIONS[currentQuestion].stage;
+      const currentStageIndex = STAGES.findIndex(s => s.id === currentStageId);
+      $('stageStrip').innerHTML = STAGES.map((s, i) => {
+        let cls = 'stage-chip';
+        if (i < currentStageIndex) cls += ' done';
+        if (i === currentStageIndex) cls += ' active';
+        return `<div class="${cls}">${escapeHTML(s.name)}</div>`;
+      }).join('');
+    }
+
+    function renderQuestion() {
+      const q = QUESTIONS[currentQuestion];
+      const stage = STAGES.find(s => s.id === q.stage);
+      renderStageStrip();
+      $('qStage').textContent = stage.name;
+      $('qCount').textContent = `Question ${currentQuestion + 1} / ${QUESTIONS.length}`;
+      $('qTitle').textContent = q.title;
+      $('qWhy').textContent = q.why;
+      $('miniSignal').classList.remove('show');
+
+      const letters = ['A', 'B', 'C', 'D', 'E'];
+      $('options').innerHTML = q.options.map((opt, i) => {
+        const selected = answers[q.id]?.index === i ? 'selected' : '';
+        return `
+          <button class="option ${selected}" onclick="selectAnswer(${i})">
+            <span class="option-letter">${letters[i]}</span>
+            <span>
+              <span class="option-title">${escapeHTML(opt.title)}</span>
+              <span class="option-desc">${escapeHTML(opt.desc)}</span>
+            </span>
+          </button>
+        `;
+      }).join('');
+      $('nextBtn').disabled = !answers[q.id];
+      updateUI();
+    }
+
+    function selectAnswer(index) {
+      const q = QUESTIONS[currentQuestion];
+      answers[q.id] = {
+        question: q.title,
+        index,
+        answer: q.options[index].title,
+        desc: q.options[index].desc,
+        scores: q.options[index].scores,
+        flag: q.options[index].flag || '',
+        goal: q.options[index].goal || '',
+        barrier: q.options[index].barrier || ''
+      };
+      $('miniSignal').textContent = `Signal captured: ${q.stage === 'signal' ? 'clarity' : q.stage === 'leak' ? 'proof' : q.stage === 'room' ? 'visibility' : 'capacity'}.`;
+      $('miniSignal').classList.add('show');
+      renderQuestion();
+    }
+
+    function shouldShowStageComplete() {
+      const q = QUESTIONS[currentQuestion];
+      const next = QUESTIONS[currentQuestion + 1];
+      return next && q.stage !== next.stage;
+    }
+
+    function nextQuestion() {
+      const q = QUESTIONS[currentQuestion];
+      if (!answers[q.id]) return;
+
+      if (shouldShowStageComplete()) {
+        const stage = STAGES.find(s => s.id === q.stage);
+        $('completeEyebrow').textContent = `${stage.name} · Complete`;
+        $('completeTitle').textContent = stage.completeTitle;
+        $('completeCopy').textContent = stage.completeCopy;
+        showScreen('screenStageComplete');
+        return;
+      }
+
+      if (currentQuestion < QUESTIONS.length - 1) {
+        currentQuestion++;
+        renderQuestion();
+        showScreen('screenQuestion');
+      } else {
+        showScreen('screenEmail');
+      }
+    }
+
+    function continueAfterStage() {
+      currentQuestion++;
+      renderQuestion();
+      showScreen('screenQuestion');
+    }
+
+    function prevQuestion() {
+      if (currentQuestion > 0) {
+        currentQuestion--;
+        renderQuestion();
+        showScreen('screenQuestion');
+      } else {
+        showScreen('screenProfile');
+      }
+    }
+
+    function backToLastQuestion() {
+      currentQuestion = QUESTIONS.length - 1;
+      renderQuestion();
+      showScreen('screenQuestion');
+    }
+
+    async function submitAndGenerate() {
+      readProfile();
+      if (CONFIG.REQUIRE_EMAIL) {
+        const email = profile.email;
+        if (!email || !email.includes('@')) {
+          $('email').style.borderColor = '#9a3d2d';
+          $('email').focus();
+          showToast('Add a valid email to unlock the report.');
+          return;
+        }
+      }
+
+      showScreen('screenLoading');
+      runLoadingAnimation();
+      const report = generateReport();
+      latestReport = report;
+
+      // Optional lead capture. This will not block the report if the endpoint is empty or fails.
+      if (CONFIG.LEAD_CAPTURE_ENDPOINT) {
+        try {
+          await fetch(CONFIG.LEAD_CAPTURE_ENDPOINT, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ profile, answers, report, createdAt: new Date().toISOString() })
+          });
+        } catch (error) {
+          console.warn('Lead capture failed:', error);
+        }
+      }
+
+      setTimeout(() => renderReport(report), 2600);
+    }
+
+    function runLoadingAnimation() {
+      [0,1,2,3].forEach((n, i) => {
+        setTimeout(() => {
+          const el = $('load' + n);
+          el.classList.add('active');
+          if (n > 0) $('load' + (n - 1)).classList.add('done');
+        }, i * 560);
+      });
+    }
+
+    function generateReport() {
+      const dims = ['positioning', 'proof', 'conversion', 'visibility', 'capacity'];
+      const totals = Object.fromEntries(dims.map(d => [d, 0]));
+      Object.values(answers).forEach(a => {
+        dims.forEach(d => { totals[d] += a.scores[d] || 0; });
+      });
+      const max = Object.keys(answers).length * 5;
+      const scores = Object.fromEntries(dims.map(d => [d, Math.round((totals[d] / max) * 100)]));
+      const totalScore = Math.round(dims.reduce((sum, d) => sum + scores[d], 0) / dims.length);
+
+      const sorted = [...dims].sort((a,b) => scores[a] - scores[b]);
+      const weakest = sorted[0];
+      const strongest = [...dims].sort((a,b) => scores[b] - scores[a])[0];
+      const referralHeavy = Object.values(answers).some(a => a.flag === 'referral');
+      const goal = Object.values(answers).find(a => a.goal)?.goal || 'fit';
+      const barrier = Object.values(answers).find(a => a.barrier)?.barrier || 'direction';
+
+      const level = getMaturityLevel(totalScore);
+      const archetype = getArchetype({ weakest, strongest, totalScore, referralHeavy, goal, barrier });
+      const leak = getLeak(weakest, barrier, referralHeavy);
+      const recs = getRecommendations(weakest, barrier, goal, referralHeavy);
+      const challenge = getChallenge(weakest, barrier, goal);
+
+      return { scores, totalScore, weakest, strongest, level, archetype, leak, recs, challenge, goal, barrier, referralHeavy };
+    }
+
+    function getMaturityLevel(score) {
+      if (score < 40) return { n: 1, name: 'Unclear but fixable', next: 'Build basic clarity before chasing more visibility.', copy: 'Your studio likely has talent, but the brand system is not yet making that talent easy to understand or trust.' };
+      if (score < 58) return { n: 2, name: 'Visible but leaky', next: 'Turn attention into trust with sharper proof and clearer positioning.', copy: 'You have pieces of a brand system, but they are not yet working together consistently enough to attract better-fit opportunities.' };
+      if (score < 76) return { n: 3, name: 'Credible but inconsistent', next: 'Build a repeatable communication system around your strongest proof.', copy: 'There is real credibility here. The opportunity is to make your message, proof, website, and content work as one system.' };
+      return { n: 4, name: 'Authority-ready', next: 'Move from showing work to shaping the conversation in your category.', copy: 'The foundations are strong enough to start thinking about authority, campaigns, PR, events, partnerships, and thought leadership.' };
+    }
+
+    function getArchetype(ctx) {
+      if (ctx.totalScore >= 76) {
+        return {
+          name: 'The Authority-Ready Studio',
+          line: 'You do not need louder marketing. You need a sharper platform for reputation.',
+          desc: 'Your foundations look strong enough to move beyond portfolio visibility. The next step is to turn your expertise into a clear point of view that can travel through press, partnerships, events, and high-value content.'
+        };
+      }
+      if (ctx.referralHeavy && ctx.weakest !== 'positioning') {
+        return {
+          name: 'The Referral-Heavy Studio',
+          line: 'Your network is doing the heavy lifting. Your brand is mostly watching.',
+          desc: 'Referrals are a strength, but they can become a ceiling. Your opportunity is to turn private trust into public proof, so good-fit clients can understand your value before someone introduces you.'
+        };
+      }
+      const map = {
+        positioning: {
+          name: 'The Blurry-but-Brilliant Studio',
+          line: 'The work may be strong. The reason to choose you is not sharp enough yet.',
+          desc: 'Your biggest leak is clarity. Prospects may understand what you do, but not why your studio is the obvious choice for a specific kind of client or project.'
+        },
+        proof: {
+          name: 'The Pretty Portfolio Studio',
+          line: 'The work looks good. The evidence is doing less than it should.',
+          desc: 'Your portfolio may be visually appealing, but it is not fully explaining the thinking, constraints, and value behind the work. That makes your expertise harder to buy.'
+        },
+        conversion: {
+          name: 'The Leaky Website Studio',
+          line: 'People may like what they see, then quietly disappear.',
+          desc: 'Your website or inquiry journey is likely creating friction. The next move is to make fit, services, proof, and next steps much easier to understand.'
+        },
+        visibility: {
+          name: 'The Hidden Gem Studio',
+          line: 'Strong work, not enough strategic visibility.',
+          desc: 'Your studio likely has something worth saying, but the right people are not hearing it consistently. The fix is not random posting. It is a focused visibility system.'
+        },
+        capacity: {
+          name: 'The Stretched Studio',
+          line: 'The issue is not desire. It is execution bandwidth.',
+          desc: 'You probably know marketing matters, but delivery work keeps swallowing the system. The next move must be small, repeatable, and built from material you already have.'
+        }
+      };
+      return map[ctx.weakest];
+    }
+
+    function getLeak(weakest, barrier, referralHeavy) {
+      const leaks = {
+        positioning: {
+          label: 'The leak: unclear choice logic',
+          damage: 'Prospects can see what you make, but may not understand why your studio is the right choice for their situation.',
+          kill: 'Stop describing your studio with broad, interchangeable words that any competitor could also claim.'
+        },
+        proof: {
+          label: 'The leak: hidden expertise',
+          damage: 'Your best thinking is probably trapped inside the project process instead of being visible in your portfolio and content.',
+          kill: 'Stop letting finished photography carry the entire sales argument.'
+        },
+        conversion: {
+          label: 'The leak: weak inquiry path',
+          damage: 'The brand may create interest, but the website is not doing enough to turn that interest into a confident next step.',
+          kill: 'Stop treating the contact page as an afterthought.'
+        },
+        visibility: {
+          label: 'The leak: inconsistent presence',
+          damage: 'The right clients may not see enough of your thinking often enough to remember, trust, or choose you.',
+          kill: 'Stop publishing only when a project is finished or when you suddenly feel guilty about marketing.'
+        },
+        capacity: {
+          label: 'The leak: no repeatable system',
+          damage: 'Marketing depends too much on spare time, which means it disappears exactly when the studio is busy.',
+          kill: 'Stop building a marketing plan that requires a version of you with unlimited time.'
+        }
+      };
+      const leak = { ...leaks[weakest] };
+      if (referralHeavy) leak.damage += ' Referrals are useful, but they should not be your only growth engine.';
+      if (barrier === 'perfectionism') leak.kill = 'Stop waiting until every story, image, and caption feels perfect enough to publish.';
+      if (barrier === 'budget') leak.kill = 'Stop starting with expensive moves before fixing the message and proof already available to you.';
+      return leak;
+    }
+
+    function getRecommendations(weakest, barrier, goal, referralHeavy) {
+      const base = [];
+      const byWeakest = {
+        positioning: [
+          ['Write the “why us” sentence', 'Create one sentence that says who you help, what you help them achieve, and why your approach is different. Use it on the homepage, proposals, LinkedIn bio, and intro emails.', 'now'],
+          ['Define your no-list', 'List the projects, clients, and briefs you no longer want. Positioning gets sharper when the studio stops trying to look suitable for everyone.', 'now']
+        ],
+        proof: [
+          ['Turn one project into a case study', 'Pick a strong project and document the brief, constraints, decisions, trade-offs, and outcome. Make the invisible thinking visible.', 'now'],
+          ['Add proof around the work', 'Collect one client quote, one process insight, and one measurable or qualitative outcome for each flagship project. Proof gives the portfolio commercial weight.', 'next']
+        ],
+        conversion: [
+          ['Fix the homepage path', 'Your homepage should answer four questions fast: who you serve, what you do, why it matters, and what to do next. Remove anything that looks beautiful but does not help that journey.', 'now'],
+          ['Make inquiry feel easier', 'Add a clear call to action, a short fit-filtering form, and a simple explanation of what happens after someone contacts you. Reduce uncertainty before the first conversation.', 'now']
+        ],
+        visibility: [
+          ['Choose one serious visibility channel', 'Do not try to be everywhere. Pick the channel most likely to reach your desired clients and commit to a simple weekly rhythm.', 'now'],
+          ['Create content from existing projects', 'Use one project to create four posts: the problem, the decision, the detail, and the result. This keeps visibility connected to expertise instead of noise.', 'next']
+        ],
+        capacity: [
+          ['Build a two-hour marketing system', 'Set one weekly block to extract stories from active work, not create from scratch. The system should survive busy weeks.', 'now'],
+          ['Create reusable templates', 'Make templates for project posts, case studies, testimonials, and inquiry replies. Reducing friction is the strategy.', 'next']
+        ]
+      };
+      base.push(...byWeakest[weakest]);
+
+      if (referralHeavy) base.push(['Turn referrals into public proof', 'Ask past clients for short quotes that explain why they trusted you. Then place those quotes beside relevant projects, not hidden on a testimonial page.', 'next']);
+      if (goal === 'authority') base.push(['Build a point-of-view platform', 'Choose one topic your studio can own in the market. Turn it into articles, talks, event ideas, newsletter notes, and media angles.', 'later']);
+      if (goal === 'upmarket') base.push(['Package value, not just taste', 'Higher-value clients need to see judgment, risk reduction, and process maturity. Reframe project pages around decisions and outcomes, not only aesthetics.', 'next']);
+      if (goal === 'pivot') base.push(['Create a bridge portfolio', 'Do not wait for perfect proof in the new sector. Reframe existing projects to highlight the transferable expertise that supports the pivot.', 'now']);
+      if (barrier === 'confidence') base.push(['Write from the questions clients already ask', 'You do not need grand thought leadership to start. Turn common client doubts into practical posts and website sections.', 'now']);
+      if (barrier === 'perfectionism') base.push(['Publish the thinking before the polish', 'Show sketches, constraints, material decisions, and lessons. Your process is often more trust-building than the final image.', 'now']);
+      if (barrier === 'budget') base.push(['Fix the free assets first', 'Before paying for a rebrand, improve your homepage copy, project descriptions, testimonials, and LinkedIn profile. These are cheap fixes with high leverage.', 'now']);
+
+      // Ensure exactly five, with no duplicate titles.
+      const seen = new Set();
+      return base.filter(r => {
+        if (seen.has(r[0])) return false;
+        seen.add(r[0]);
+        return true;
+      }).slice(0, 5).map(r => ({ title: r[0], body: r[1], timing: r[2] }));
+    }
+
+    function getChallenge(weakest, barrier, goal) {
+      const week1 = weakest === 'positioning'
+        ? ['Sharpen the sentence', 'Rewrite your positioning in one line. Make it specific enough that the wrong client feels gently excluded.']
+        : ['Audit the homepage', 'Mark every section as clarity, proof, trust, or noise. Remove or rewrite the noise.'];
+      const week2 = weakest === 'proof'
+        ? ['Build one case study', 'Choose one project and write the brief, constraint, decision, and result.']
+        : ['Upgrade one project page', 'Add context, process, decisions, and one proof point to a flagship project.'];
+      const week3 = weakest === 'visibility'
+        ? ['Create four signal posts', 'Use one project to publish four useful angles instead of four random updates.']
+        : ['Create a proof-led post set', 'Turn your upgraded project into three short posts: problem, process, result.'];
+      const week4 = barrier === 'time'
+        ? ['Install the rhythm', 'Block two hours per week and repeat the same content extraction workflow.']
+        : goal === 'authority'
+          ? ['Package the point of view', 'Turn your strongest opinion into one article, one LinkedIn post, and one event or PR angle.']
+          : ['Fix the inquiry path', 'Make the next step clear, reduce form friction, and explain what happens after contact.'];
+      return [week1, week2, week3, week4].map((w, i) => ({ week: i + 1, title: w[0], body: w[1] }));
+    }
+
+    function metricLabel(score) {
+      if (score < 40) return 'Leaking';
+      if (score < 58) return 'Patchy';
+      if (score < 76) return 'Working';
+      return 'Strong';
+    }
+
+    function metricNote(dim, score) {
+      const notes = {
+        positioning: ['The reason to choose you needs sharpening.', 'There is some clarity, but it may still sound too broad.', 'Your difference is becoming visible.', 'Your market logic is clear and useful.'],
+        proof: ['Your expertise is not visible enough yet.', 'The work is doing more than the story.', 'Proof is present, but could work harder.', 'Your proof can support stronger positioning.'],
+        conversion: ['Interest may be leaking before inquiry.', 'The path to action needs cleaning up.', 'The website can support trust with a few fixes.', 'Your digital presence is commercially useful.'],
+        visibility: ['The right people may not see you enough.', 'Visibility exists, but lacks rhythm or focus.', 'Your presence has useful momentum.', 'You have a clear visibility engine.'],
+        capacity: ['Your system must be smaller and easier.', 'Execution is possible if friction drops.', 'You can sustain a simple rhythm.', 'You have capacity for bigger moves.']
+      };
+      const i = score < 40 ? 0 : score < 58 ? 1 : score < 76 ? 2 : 3;
+      return notes[dim][i];
+    }
+
+    function renderReport(report) {
+      const p = profile;
+      const dimNames = {
+        positioning: 'Positioning clarity', proof: 'Portfolio proof', conversion: 'Website conversion', visibility: 'Visibility system', capacity: 'Marketing capacity'
+      };
+      const meta = [p.sector, p.size, p.website ? p.website.replace(/^https?:\/\//, '') : ''].filter(Boolean).map(escapeHTML).join(' · ');
+      const scoreCards = Object.entries(report.scores).map(([dim, score]) => `
+        <div class="metric">
+          <div class="metric-label">${dimNames[dim]}</div>
+          <div class="metric-score">${score}<span>/100</span></div>
+          <div class="bar"><div class="bar-fill" data-width="${score}%"></div></div>
+          <div class="metric-note"><strong>${metricLabel(score)}.</strong> ${metricNote(dim, score)}</div>
+        </div>
+      `).join('');
+
+      const recs = report.recs.map((r, i) => `
+        <div class="rec">
+          <div class="rec-num">${i + 1}</div>
+          <div>
+            <div class="rec-title">${escapeHTML(r.title)}</div>
+            <div class="rec-body">${escapeHTML(r.body)}</div>
+          </div>
+          <div class="tag tag-${r.timing}">${r.timing === 'now' ? 'Fix now' : r.timing === 'next' ? 'Build next' : 'Later'}</div>
+        </div>
+      `).join('');
+
+      const challenge = report.challenge.map(w => `
+        <div class="week">
+          <div class="week-label">Week ${w.week}</div>
+          <div class="week-title">${escapeHTML(w.title)}</div>
+          <p>${escapeHTML(w.body)}</p>
+        </div>
+      `).join('');
+
+      $('reportMount').innerHTML = `
+        <div class="report-hero">
+          <div class="report-content">
+            <div class="report-kicker">Diagnostic report · ${escapeHTML(p.studioName || 'Your studio')}</div>
+            <h1 class="report-title">${escapeHTML(report.archetype.name)}</h1>
+            <p class="report-desc"><strong>${escapeHTML(report.archetype.line)}</strong><br>${escapeHTML(report.archetype.desc)}</p>
+            <div class="report-tags">
+              ${meta ? `<span class="report-tag">${meta}</span>` : ''}
+              ${p.knownFor ? `<span class="report-tag">Wants to be known for: ${escapeHTML(p.knownFor)}</span>` : ''}
+              <span class="report-tag">Total maturity: ${report.totalScore}/100</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="dashboard">
+          <div class="metric-grid">${scoreCards}</div>
+          <div class="level-card">
+            <div>
+              <div class="level-number">${report.level.n}</div>
+              <div class="level-name">${escapeHTML(report.level.name)}</div>
+              <p class="level-copy">${escapeHTML(report.level.copy)}</p>
+            </div>
+            <div class="next-unlock"><strong>Next unlock:</strong> ${escapeHTML(report.level.next)}</div>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-label">The diagnosis</div>
+          <h2 class="section-title">${escapeHTML(report.leak.label)}</h2>
+          <p class="section-copy">${escapeHTML(report.leak.damage)}</p>
+          <div class="diagnosis-grid">
+            <div class="diagnosis-card"><strong>Strongest signal</strong><p>${escapeHTML(dimNames[report.strongest])} is currently doing the most work for the studio.</p></div>
+            <div class="diagnosis-card"><strong>Weakest leak</strong><p>${escapeHTML(dimNames[report.weakest])} is the first place to repair.</p></div>
+            <div class="diagnosis-card"><strong>Kill this first</strong><p>${escapeHTML(report.leak.kill)}</p></div>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-label">The fix list</div>
+          <h2 class="section-title">Do these before you chase more marketing activity.</h2>
+          <div class="rec-list">${recs}</div>
+        </div>
+
+        <div class="section">
+          <div class="section-label">30-day repair plan</div>
+          <h2 class="section-title">A small plan your studio can actually finish.</h2>
+          <p class="section-copy">The goal is not to become a content machine. The goal is to make your strongest work easier to understand, trust, and choose.</p>
+          <div class="challenge-grid">${challenge}</div>
+        </div>
+
+        <div class="section" style="text-align:center;">
+          <div class="section-label">Next move</div>
+          <h2 class="section-title">Want the deeper version?</h2>
+          <p class="section-copy" style="max-width:680px;margin:0 auto;">A full studio audit can review your website, messaging, portfolio stories, competitor positioning, and content system — then turn this into a 90-day action plan.</p>
+          <div class="cta-row">
+            <a class="btn btn-primary" href="mailto:${encodeURIComponent(CONFIG.BOOKING_EMAIL)}?subject=${encodeURIComponent('Studio Brand Audit Enquiry')}">Book a deeper audit →</a>
+            <button class="btn btn-ghost" onclick="copyShareText()">Copy my result</button>
+            <button class="btn btn-ghost" onclick="location.reload()">Run again</button>
+          </div>
+        </div>
+      `;
+
+      showScreen('screenReport');
+      setTimeout(() => {
+        document.querySelectorAll('.bar-fill').forEach(el => { el.style.width = el.dataset.width; });
+      }, 150);
+    }
+
+    function copyShareText() {
+      if (!latestReport) return;
+      const text = `I got ${latestReport.archetype.name} on the Studio Brand Bottleneck Finder. Main leak: ${latestReport.leak.label}.`;
+      navigator.clipboard?.writeText(text).then(() => showToast('Result copied.'));
+    }
+
+    function showToast(msg) {
+      $('toast').textContent = msg;
+      $('toast').classList.add('show');
+      setTimeout(() => $('toast').classList.remove('show'), 1800);
+    }
+
+    updateUI();
+  </script>
+</body>
+</html>
