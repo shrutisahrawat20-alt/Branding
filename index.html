@@ -667,6 +667,220 @@
       .nav-row .btn { width: 100%; }
       .headline { font-size: 3.25rem; }
     }
+
+
+    /* -----------------------------
+       PREMIUM + MULTI-SELECT UPGRADE
+       ----------------------------- */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      z-index: -2;
+      background:
+        radial-gradient(circle at 12% 18%, rgba(195,99,46,.10), transparent 32%),
+        radial-gradient(circle at 88% 8%, rgba(69,90,112,.10), transparent 30%),
+        linear-gradient(180deg, #fbfaf7 0%, #f6f0ea 100%);
+    }
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      pointer-events: none;
+      opacity: .35;
+      background-image:
+        linear-gradient(rgba(25,22,19,.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(25,22,19,.025) 1px, transparent 1px);
+      background-size: 74px 74px;
+      mask-image: linear-gradient(to bottom, rgba(0,0,0,.9), transparent 85%);
+    }
+    .topbar {
+      box-shadow: 0 18px 55px rgba(25,22,19,.05);
+    }
+    .brand-wordmark::before {
+      content: '';
+      display: inline-block;
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      margin-right: .5rem;
+      background: var(--accent);
+      box-shadow: 0 0 0 5px rgba(195,99,46,.12);
+      vertical-align: .08em;
+    }
+    .card, .section, .metric, .level-card, .locked-card, .diagnosis-card, .week, .rec {
+      box-shadow: 0 18px 60px rgba(25,22,19,.055);
+    }
+    .card {
+      background:
+        linear-gradient(180deg, rgba(255,255,255,.94), rgba(255,255,255,.88)),
+        radial-gradient(circle at 90% 0%, rgba(195,99,46,.09), transparent 30%);
+      backdrop-filter: blur(16px);
+    }
+    .hero {
+      background:
+        radial-gradient(circle at 10% 20%, rgba(255,255,255,.08), transparent 24%),
+        radial-gradient(circle at 85% 12%, rgba(195,99,46,.32), transparent 36%),
+        linear-gradient(135deg, #14110f 0%, #26201b 52%, #161412 100%);
+    }
+    .hero .eyebrow,
+    .report-kicker,
+    .section-label,
+    .q-stage {
+      color: var(--accent);
+      text-shadow: 0 0 28px rgba(195,99,46,.08);
+    }
+    .btn-primary {
+      background: linear-gradient(135deg, var(--accent), #a94f22);
+      box-shadow: 0 14px 34px rgba(195,99,46,.24);
+    }
+    .btn-dark {
+      background: linear-gradient(135deg, var(--ink), #342d27);
+      box-shadow: 0 14px 34px rgba(25,22,19,.12);
+    }
+    .stage-strip {
+      padding: .35rem;
+      border: 1px solid rgba(225,216,207,.75);
+      background: rgba(255,255,255,.58);
+      border-radius: 999px;
+      box-shadow: 0 16px 50px rgba(25,22,19,.05);
+    }
+    .stage-chip { border: 0; background: transparent; }
+    .stage-chip.active { background: var(--ink); color: #fff; }
+    .stage-chip.done { background: #fff6ef; color: var(--accent); }
+    .multi-hint {
+      display: inline-flex;
+      align-items: center;
+      gap: .45rem;
+      border: 1px solid rgba(195,99,46,.18);
+      background: #fff8f2;
+      color: var(--accent);
+      border-radius: 999px;
+      padding: .45rem .75rem;
+      font-size: .72rem;
+      text-transform: uppercase;
+      letter-spacing: .11em;
+      font-weight: 600;
+      margin-bottom: .4rem;
+    }
+    .option {
+      position: relative;
+      isolation: isolate;
+      border-color: rgba(225,216,207,.92);
+      background: rgba(255,255,255,.74);
+    }
+    .option::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      background: radial-gradient(circle at 92% 12%, rgba(195,99,46,.11), transparent 32%);
+      opacity: 0;
+      transition: opacity .18s ease;
+      z-index: -1;
+    }
+    .option:hover::before,
+    .option.selected::before { opacity: 1; }
+    .option.selected {
+      box-shadow: inset 0 0 0 1px rgba(195,99,46,.18), 0 16px 40px rgba(195,99,46,.08);
+    }
+    .option-check {
+      margin-left: auto;
+      width: 22px;
+      height: 22px;
+      border-radius: 7px;
+      border: 1.5px solid var(--line);
+      background: #fff;
+      display: grid;
+      place-items: center;
+      flex: 0 0 auto;
+      color: #fff;
+      font-size: .72rem;
+      font-weight: 700;
+      transition: all .18s ease;
+    }
+    .option.selected .option-check {
+      background: var(--accent);
+      border-color: var(--accent);
+      box-shadow: 0 8px 18px rgba(195,99,46,.2);
+    }
+    .option.selected .option-check::before { content: '✓'; }
+    .mini-signal.show {
+      background: #fff8f2;
+      border: 1px solid rgba(195,99,46,.16);
+      color: var(--accent);
+      border-radius: 999px;
+      padding: .6rem .8rem;
+      display: inline-flex;
+    }
+    .quote-card {
+      border: 1px solid rgba(195,99,46,.18);
+      border-radius: 22px;
+      background:
+        linear-gradient(135deg, #fff8f2, #fff),
+        radial-gradient(circle at 100% 0%, rgba(195,99,46,.14), transparent 34%);
+      padding: 1.1rem 1.2rem;
+      margin: 1.15rem 0 1.35rem;
+      text-align: left;
+      box-shadow: 0 18px 48px rgba(25,22,19,.06);
+    }
+    .quote-label {
+      color: var(--accent);
+      font-size: .68rem;
+      text-transform: uppercase;
+      letter-spacing: .16em;
+      font-weight: 700;
+      margin-bottom: .45rem;
+    }
+    .quote-text {
+      font-family: var(--serif);
+      font-size: clamp(1.25rem, 3vw, 1.75rem);
+      line-height: 1.08;
+      color: var(--ink);
+    }
+    .quote-sub {
+      margin-top: .55rem;
+      color: var(--muted);
+      font-size: .9rem;
+      line-height: 1.5;
+    }
+    .report-hero {
+      background:
+        radial-gradient(circle at 85% 0%, rgba(195,99,46,.35), transparent 38%),
+        radial-gradient(circle at 0% 85%, rgba(233,182,142,.10), transparent 30%),
+        linear-gradient(135deg, #14110f, #2a231e 58%, #171411);
+    }
+    .report-hero::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(255,255,255,.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.025) 1px, transparent 1px);
+      background-size: 58px 58px;
+      mask-image: linear-gradient(to bottom right, rgba(0,0,0,.65), transparent 75%);
+    }
+    .report-content { position: relative; z-index: 2; }
+    .section.truth-section {
+      background:
+        linear-gradient(135deg, var(--ink), #312922),
+        radial-gradient(circle at 100% 0%, rgba(195,99,46,.35), transparent 40%);
+      color: #fff;
+      overflow: hidden;
+      position: relative;
+    }
+    .truth-section .section-label { color: var(--accent-2); }
+    .truth-section .section-title { color: #fff; }
+    .truth-section .section-copy { color: rgba(255,255,255,.68); }
+    .truth-mark {
+      font-family: var(--serif);
+      font-size: clamp(3rem, 9vw, 6rem);
+      line-height: .7;
+      color: rgba(233,182,142,.38);
+      margin-bottom: .35rem;
+    }
+
   </style>
 </head>
 <body>
@@ -703,7 +917,7 @@
           <span class="chip">Marketing capacity</span>
         </div>
         <button class="btn btn-primary" onclick="goToProfile()">Find my studio leak →</button>
-        <div class="hero-note">No boring scorecard. No vague “post more content” advice.</div>
+        <div class="hero-note">Premium diagnostic. Sharp copy. No vague “post more content” advice.</div>
       </div>
     </section>
 
@@ -796,7 +1010,13 @@
         <div class="card">
           <div class="eyebrow">Report ready · final unlock</div>
           <h2 class="q-title">Your studio bottleneck has been mapped.</h2>
-          <p class="q-why">Drop your email to unlock the full diagnosis. On GitHub Pages, this works locally by default. Add a webhook endpoint in the code if you want to store leads.</p>
+          <p class="q-why">You chose the signals. We found the pattern. Unlock the diagnosis and see what is quietly helping — or hurting — your studio's ability to attract better clients.</p>
+
+          <div class="quote-card">
+            <div class="quote-label">Studio truth before we reveal it</div>
+            <div class="quote-text" id="emailTruthQuote">Pretty work opens the door. Clear proof keeps people in the room.</div>
+            <div class="quote-sub">Your report will show whether your brand is creating trust, leaking it, or asking referrals to do all the work.</div>
+          </div>
 
           <div class="locked-grid">
             <div class="locked-card">
@@ -1088,37 +1308,71 @@
       $('miniSignal').classList.remove('show');
 
       const letters = ['A', 'B', 'C', 'D', 'E'];
-      $('options').innerHTML = q.options.map((opt, i) => {
-        const selected = answers[q.id]?.index === i ? 'selected' : '';
-        return `
-          <button class="option ${selected}" onclick="selectAnswer(${i})">
-            <span class="option-letter">${letters[i]}</span>
-            <span>
-              <span class="option-title">${escapeHTML(opt.title)}</span>
-              <span class="option-desc">${escapeHTML(opt.desc)}</span>
-            </span>
-          </button>
-        `;
-      }).join('');
-      $('nextBtn').disabled = !answers[q.id];
+      const selectedIndices = answers[q.id]?.indices || [];
+      $('options').innerHTML = `
+        <div class="multi-hint">Choose all that apply</div>
+        ${q.options.map((opt, i) => {
+          const selected = selectedIndices.includes(i) ? 'selected' : '';
+          return `
+            <button class="option ${selected}" aria-pressed="${selected ? 'true' : 'false'}" onclick="selectAnswer(${i})">
+              <span class="option-letter">${letters[i]}</span>
+              <span>
+                <span class="option-title">${escapeHTML(opt.title)}</span>
+                <span class="option-desc">${escapeHTML(opt.desc)}</span>
+              </span>
+              <span class="option-check" aria-hidden="true"></span>
+            </button>
+          `;
+        }).join('')}
+      `;
+      $('nextBtn').disabled = selectedIndices.length === 0;
+      $('nextBtn').textContent = selectedIndices.length > 1 ? `Lock ${selectedIndices.length} signals →` : 'Next signal →';
       updateUI();
+    }
+
+    function averageScores(selectedOptions) {
+      const dims = ['positioning', 'proof', 'conversion', 'visibility', 'capacity'];
+      const totals = Object.fromEntries(dims.map(d => [d, 0]));
+      selectedOptions.forEach(opt => {
+        dims.forEach(d => { totals[d] += opt.scores[d] || 0; });
+      });
+      return Object.fromEntries(dims.map(d => [d, totals[d] / selectedOptions.length]));
     }
 
     function selectAnswer(index) {
       const q = QUESTIONS[currentQuestion];
+      const existing = answers[q.id]?.indices || [];
+      let indices = existing.includes(index)
+        ? existing.filter(i => i !== index)
+        : [...existing, index];
+
+      indices = indices.sort((a, b) => a - b);
+
+      if (!indices.length) {
+        delete answers[q.id];
+        renderQuestion();
+        return;
+      }
+
+      const selectedOptions = indices.map(i => q.options[i]);
       answers[q.id] = {
         question: q.title,
-        index,
-        answer: q.options[index].title,
-        desc: q.options[index].desc,
-        scores: q.options[index].scores,
-        flag: q.options[index].flag || '',
-        goal: q.options[index].goal || '',
-        barrier: q.options[index].barrier || ''
+        indices,
+        answers: selectedOptions.map(o => o.title),
+        descs: selectedOptions.map(o => o.desc),
+        answer: selectedOptions.map(o => o.title).join(' + '),
+        scores: averageScores(selectedOptions),
+        flags: selectedOptions.map(o => o.flag).filter(Boolean),
+        goals: selectedOptions.map(o => o.goal).filter(Boolean),
+        barriers: selectedOptions.map(o => o.barrier).filter(Boolean)
       };
-      $('miniSignal').textContent = `Signal captured: ${q.stage === 'signal' ? 'clarity' : q.stage === 'leak' ? 'proof' : q.stage === 'room' ? 'visibility' : 'capacity'}.`;
-      $('miniSignal').classList.add('show');
+
       renderQuestion();
+      const label = q.stage === 'signal' ? 'clarity' : q.stage === 'leak' ? 'proof' : q.stage === 'room' ? 'visibility' : 'capacity';
+      $('miniSignal').textContent = indices.length > 1
+        ? `${indices.length} signals captured: ${label}. Real studios are messy — that is useful data.`
+        : `Signal captured: ${label}.`;
+      $('miniSignal').classList.add('show');
     }
 
     function shouldShowStageComplete() {
@@ -1216,28 +1470,77 @@
 
     function generateReport() {
       const dims = ['positioning', 'proof', 'conversion', 'visibility', 'capacity'];
+      const answered = Object.values(answers);
       const totals = Object.fromEntries(dims.map(d => [d, 0]));
-      Object.values(answers).forEach(a => {
+      answered.forEach(a => {
         dims.forEach(d => { totals[d] += a.scores[d] || 0; });
       });
-      const max = Object.keys(answers).length * 5;
+      const max = Math.max(answered.length, 1) * 5;
       const scores = Object.fromEntries(dims.map(d => [d, Math.round((totals[d] / max) * 100)]));
       const totalScore = Math.round(dims.reduce((sum, d) => sum + scores[d], 0) / dims.length);
 
       const sorted = [...dims].sort((a,b) => scores[a] - scores[b]);
       const weakest = sorted[0];
       const strongest = [...dims].sort((a,b) => scores[b] - scores[a])[0];
-      const referralHeavy = Object.values(answers).some(a => a.flag === 'referral');
-      const goal = Object.values(answers).find(a => a.goal)?.goal || 'fit';
-      const barrier = Object.values(answers).find(a => a.barrier)?.barrier || 'direction';
+      const allFlags = answered.flatMap(a => a.flags || (a.flag ? [a.flag] : []));
+      const allGoals = answered.flatMap(a => a.goals || (a.goal ? [a.goal] : []));
+      const allBarriers = answered.flatMap(a => a.barriers || (a.barrier ? [a.barrier] : []));
+      const referralHeavy = allFlags.includes('referral');
+      const goal = allGoals[0] || 'fit';
+      const barrier = allBarriers[0] || 'direction';
 
       const level = getMaturityLevel(totalScore);
       const archetype = getArchetype({ weakest, strongest, totalScore, referralHeavy, goal, barrier });
       const leak = getLeak(weakest, barrier, referralHeavy);
       const recs = getRecommendations(weakest, barrier, goal, referralHeavy);
       const challenge = getChallenge(weakest, barrier, goal);
+      const quote = getStudioTruth(weakest, barrier, referralHeavy);
 
-      return { scores, totalScore, weakest, strongest, level, archetype, leak, recs, challenge, goal, barrier, referralHeavy };
+      return { scores, totalScore, weakest, strongest, level, archetype, leak, recs, challenge, goal, barrier, referralHeavy, quote };
+    }
+
+    function getStudioTruth(weakest, barrier, referralHeavy) {
+      if (barrier === 'perfectionism') {
+        return {
+          text: 'Perfection is a beautiful hiding place.',
+          sub: 'Your audience does not need every edge polished. They need to see the judgment behind the work.'
+        };
+      }
+      if (barrier === 'time') {
+        return {
+          text: 'If the system dies during deadline week, it was never the system.',
+          sub: 'Your marketing needs to be small enough to survive real studio life.'
+        };
+      }
+      if (referralHeavy) {
+        return {
+          text: 'Referrals are applause. They are not a strategy on their own.',
+          sub: 'Turn private trust into public proof so the next client does not need a warm introduction to believe you.'
+        };
+      }
+      const quotes = {
+        positioning: {
+          text: 'If your work needs a translator, your brand has not finished the job.',
+          sub: 'The right client should understand why you matter before the first call.'
+        },
+        proof: {
+          text: 'Pretty pictures open the door. Proof keeps people in the room.',
+          sub: 'Show the thinking, constraints, decisions, and outcomes behind the image.'
+        },
+        conversion: {
+          text: 'A beautiful website with no next step is just an expensive waiting room.',
+          sub: 'Make it easy for good-fit clients to know what to do next.'
+        },
+        visibility: {
+          text: 'Posting once a quarter is not mystique. It is hide-and-seek.',
+          sub: 'Visibility works when your best thinking shows up with rhythm.'
+        },
+        capacity: {
+          text: 'The best marketing system is the one that survives a busy studio.',
+          sub: 'Build a repeatable ritual from work you are already doing.'
+        }
+      };
+      return quotes[weakest] || quotes.positioning;
     }
 
     function getMaturityLevel(score) {
@@ -1455,6 +1758,13 @@
           </div>
         </div>
 
+        <div class="section truth-section">
+          <div class="truth-mark">“</div>
+          <div class="section-label">Studio truth</div>
+          <h2 class="section-title">${escapeHTML(report.quote.text)}</h2>
+          <p class="section-copy">${escapeHTML(report.quote.sub)}</p>
+        </div>
+
         <div class="dashboard">
           <div class="metric-grid">${scoreCards}</div>
           <div class="level-card">
@@ -1511,7 +1821,7 @@
 
     function copyShareText() {
       if (!latestReport) return;
-      const text = `I got ${latestReport.archetype.name} on the Studio Brand Bottleneck Finder. Main leak: ${latestReport.leak.label}.`;
+      const text = `I got ${latestReport.archetype.name} on the Studio Brand Bottleneck Finder. Main leak: ${latestReport.leak.label}. Studio truth: ${latestReport.quote.text}`;
       navigator.clipboard?.writeText(text).then(() => showToast('Result copied.'));
     }
 
