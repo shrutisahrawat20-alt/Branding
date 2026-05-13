@@ -3,11 +3,11 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Studio Brand Bottleneck Finder</title>
-  <meta name="description" content="A premium diagnostic for architecture, interiors, furniture, lighting, and landscape studios to find their brand bottleneck, website leak, and best platform focus." />
+  <title>Studio Brand Diagnostic</title>
+  <meta name="description" content="A minimal brand diagnostic for architecture, interiors, furniture, lighting, and landscape studios to find their growth bottleneck, website fix, and platform focus." />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { box-sizing: border-box; }
     * { margin: 0; padding: 0; }
@@ -23,17 +23,17 @@
       --warm-2: #e6d9cb;
       --line: #ded2c6;
       --line-2: #cdbfb1;
-      --accent: #c65f2a;
-      --accent-dark: #9f4720;
-      --accent-soft: #f3dfd2;
+      --accent: #4F5A4A;
+      --accent-dark: #22261F;
+      --accent-soft: #E8ECE2;
       --green: #2f6b51;
       --green-soft: #e3f0e8;
-      --red: #9a3c2e;
-      --red-soft: #f5dcd5;
-      --gold: #b98432;
-      --blue: #41556d;
-      --serif: 'Cormorant Garamond', Georgia, serif;
-      --sans: 'Outfit', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      --red: #5B463F;
+      --red-soft: #EFE8E3;
+      --gold: #7C7468;
+      --blue: #4D5750;
+      --serif: 'Instrument Serif', Georgia, serif;
+      --sans: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
       --shadow: 0 28px 90px rgba(24,20,17,.14);
       --shadow-soft: 0 14px 50px rgba(24,20,17,.08);
       --radius-xl: 34px;
@@ -467,6 +467,230 @@
       .q-title { font-size: 2.55rem; }
       .report-title { font-size: 3.25rem; }
     }
+  
+
+    /* ─────────────────────────────────────────────
+       MINIMAL CHIC THEME OVERRIDES
+       Clean editorial, quieter than the previous warm/orange style.
+       ───────────────────────────────────────────── */
+    :root {
+      --ink: #111111;
+      --ink-2: #24221f;
+      --muted: #6f6a62;
+      --soft: #9a948b;
+      --paper: #f7f5ef;
+      --paper-2: #f0ece4;
+      --warm: #ebe6dc;
+      --warm-2: #ddd6ca;
+      --line: #d8d0c4;
+      --line-2: #c9c0b3;
+      --accent: #4f5a4a;
+      --accent-dark: #20241f;
+      --accent-soft: #e8ece2;
+      --green: #465645;
+      --green-soft: #edf1ea;
+      --red: #5d514a;
+      --red-soft: #eee8e2;
+      --gold: #7d7568;
+      --blue: #505a54;
+      --serif: 'Instrument Serif', Georgia, serif;
+      --sans: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      --shadow: 0 24px 70px rgba(17, 17, 17, .08);
+      --shadow-soft: 0 14px 40px rgba(17, 17, 17, .055);
+      --radius-xl: 28px;
+      --radius-lg: 22px;
+      --radius-md: 16px;
+    }
+
+    body {
+      background:
+        radial-gradient(circle at 8% 0%, rgba(255,255,255,.86), transparent 34rem),
+        linear-gradient(180deg, #fbfaf6 0%, var(--paper) 42%, #f2eee6 100%);
+      background-size: auto;
+      font-weight: 400;
+      color: var(--ink);
+    }
+    body::before {
+      background:
+        linear-gradient(90deg, rgba(17,17,17,.025) 1px, transparent 1px),
+        linear-gradient(0deg, rgba(17,17,17,.018) 1px, transparent 1px);
+      background-size: 96px 96px;
+      opacity: .55;
+    }
+
+    .progress-shell { height: 2px; background: rgba(17,17,17,.08); }
+    .progress-fill { background: var(--ink); }
+
+    .topbar {
+      top: 2px;
+      background: rgba(247,245,239,.82);
+      border-bottom: 1px solid rgba(17,17,17,.07);
+      box-shadow: none;
+      backdrop-filter: blur(22px);
+    }
+    .brand-wordmark {
+      font-family: var(--sans);
+      font-size: .86rem;
+      text-transform: uppercase;
+      letter-spacing: .14em;
+      font-weight: 700;
+    }
+    .top-meta { color: var(--muted); font-size: .72rem; letter-spacing: .12em; }
+    .signal-pill { background: rgba(255,255,255,.58); border-color: rgba(17,17,17,.11); color: var(--ink); }
+
+    .hero { background: transparent; }
+    .eyebrow, .section-eyebrow, .social-title, .multi-hint, .platform-label, .week-label {
+      color: var(--accent);
+      letter-spacing: .18em;
+    }
+    .headline {
+      max-width: 980px;
+      font-size: clamp(3.1rem, 8vw, 7.1rem);
+      line-height: .94;
+      letter-spacing: -.05em;
+      font-weight: 400;
+    }
+    .headline em {
+      color: inherit;
+      font-style: italic;
+      background: linear-gradient(to top, rgba(79,90,74,.18) 0 35%, transparent 35% 100%);
+      padding: 0 .04em;
+    }
+    .subhead { color: var(--muted); max-width: 650px; font-size: clamp(1rem, 1.25vw, 1.18rem); }
+    .chip {
+      background: rgba(255,255,255,.58);
+      border: 1px solid rgba(17,17,17,.1);
+      box-shadow: none;
+      color: var(--muted);
+      border-radius: 999px;
+    }
+
+    .card,
+    .section-card,
+    .mini-card,
+    .metric,
+    .maturity,
+    .snapshot-card,
+    .platform-card,
+    .rec,
+    .week,
+    .locked-item,
+    .email-card,
+    .social-box {
+      background: rgba(255,255,252,.72);
+      border: 1px solid rgba(17,17,17,.12);
+      box-shadow: var(--shadow-soft);
+    }
+    .card::before { display: none; }
+    .card { box-shadow: var(--shadow); }
+
+    .q-title, .section-title, .report-title, .truth-title, .platform-name {
+      letter-spacing: -.035em;
+      font-weight: 400;
+    }
+    .q-why, .section-copy, .option-desc, .metric-note, .snapshot-card p, .platform-card p, .rec-text, .week p, .truth-copy {
+      color: var(--muted);
+      font-weight: 400;
+    }
+
+    .input, .select, .textarea {
+      border: 1px solid rgba(17,17,17,.14);
+      background: rgba(255,255,252,.66);
+      border-radius: 16px;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.8);
+    }
+    .input:focus, .select:focus, .textarea:focus {
+      border-color: var(--ink);
+      box-shadow: 0 0 0 4px rgba(17,17,17,.06);
+      background: #fffefb;
+    }
+    .input.invalid, .select.invalid, .textarea.invalid { border-color: #7d554d; background: #fffaf7; }
+
+    .btn { border-radius: 999px; font-weight: 700; letter-spacing: -.01em; }
+    .btn-primary,
+    .btn-dark {
+      background: var(--ink);
+      color: #fff;
+      box-shadow: 0 18px 45px rgba(17,17,17,.13);
+    }
+    .btn-primary:hover,
+    .btn-dark:hover { background: #2a2926; }
+    .btn-ghost {
+      background: rgba(255,255,252,.56);
+      border-color: rgba(17,17,17,.12);
+      color: var(--muted);
+      box-shadow: none;
+    }
+
+    .stage-chip {
+      background: rgba(255,255,252,.5);
+      border-color: rgba(17,17,17,.1);
+      color: var(--soft);
+    }
+    .stage-chip.active { background: var(--ink); border-color: var(--ink); color: #fff; }
+    .stage-chip.done { background: var(--accent-soft); border-color: rgba(79,90,74,.22); color: var(--accent); }
+
+    .option {
+      border: 1px solid rgba(17,17,17,.12);
+      background: rgba(255,255,252,.62);
+      border-radius: 18px;
+      box-shadow: none;
+    }
+    .option:hover {
+      border-color: rgba(17,17,17,.32);
+      box-shadow: 0 14px 35px rgba(17,17,17,.065);
+      background: rgba(255,255,252,.88);
+    }
+    .option.selected {
+      border-color: var(--ink);
+      background: #fffefb;
+      box-shadow: 0 16px 42px rgba(17,17,17,.075);
+    }
+    .option-letter { border-color: rgba(17,17,17,.13); color: var(--soft); background: rgba(255,255,252,.92); }
+    .option.selected .option-letter { background: var(--ink); border-color: var(--ink); color: #fff; }
+    .mini-signal {
+      border-color: rgba(79,90,74,.24);
+      background: var(--accent-soft);
+      color: var(--accent-dark);
+      box-shadow: none;
+    }
+
+    .report-hero,
+    .dark-block,
+    .platform-card.primary {
+      background:
+        radial-gradient(circle at 82% 18%, rgba(255,255,255,.08), transparent 24rem),
+        linear-gradient(135deg, #111 0%, #23231f 100%);
+      color: #fff;
+      border-color: rgba(255,255,255,.1);
+      box-shadow: 0 28px 80px rgba(17,17,17,.16);
+    }
+    .report-hero::before, .report-hero::after { display: none; }
+    .report-kicker, .report-meta, .quote-mark, .platform-card.primary .platform-label { color: rgba(255,255,255,.56); }
+    .report-summary, .platform-card.primary p, .truth-copy { color: rgba(255,255,255,.72); }
+    .report-score-pill { border-color: rgba(255,255,255,.18); background: rgba(255,255,255,.06); color: #fff; }
+
+    .track { background: rgba(17,17,17,.1); height: 4px; }
+    .fill { background: var(--ink); }
+    .level-number, .rec-num { background: var(--ink); color: #fff; }
+    .ladder-row { background: rgba(255,255,252,.5); border-color: rgba(17,17,17,.1); }
+    .ladder-row.active { background: var(--ink); border-color: var(--ink); color: #fff; }
+
+    .platform-card.primary { background: #111; }
+    .tag { border: 1px solid rgba(17,17,17,.08); }
+    .tag-now, .tag-next, .tag-later {
+      background: #f1eee8;
+      color: #2a2926;
+    }
+
+    .toast { background: var(--ink); }
+
+    @media (max-width: 720px) {
+      .headline { font-size: 3.15rem; }
+      .report-title { font-size: 3rem; }
+      .card { border-radius: 24px; }
+    }
+
   </style>
 </head>
 <body>
@@ -479,7 +703,7 @@
   <div class="progress-shell"><div class="progress-fill" id="progressFill"></div></div>
 
   <header class="topbar">
-    <div class="brand-wordmark">Studio Brand Bottleneck Finder</div>
+    <div class="brand-wordmark">Studio Brand Diagnostic</div>
     <div class="top-meta">
       <span class="desktop-only" id="stageMeta">Not started</span>
       <span class="signal-pill" id="signalMeta">0 signals</span>
@@ -489,7 +713,7 @@
   <main>
     <section class="screen centered hero active" id="screenLanding">
       <div class="hero-inner text-narrow">
-        <div class="eyebrow">Free diagnostic for design studios</div>
+        <div class="eyebrow">Brand diagnostic for design studios</div>
         <h1 class="headline">Your work might be strong. <em>Your brand may be leaking trust.</em></h1>
         <p class="subhead">Find your studio’s main bottleneck, first website fix, and the social platform worth focusing on — without generic “post more” advice.</p>
         <div class="hero-chips">
